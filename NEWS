@@ -1,0 +1,31 @@
+Changes in cvTools version 0.3.0
+
+    + Changed some argument and component names regarding standard errors.
+
+
+
+Changes in cvTools version 0.2.0
+
+    + New generic function repCV() for (repeated) K-fold cross-validation.  The 
+      example functions cvLm(), cvLmrob() and cvLts() are now aliases for the 
+      respective methods.
+    
+    + Bugfix in cvFit(): default names are retained if cvTool() returns a 
+      1x1 matrix.
+    
+    + Bugfix in plot.cvSelect(): default handling of argument 'method' no 
+      longer throws error in case of only one replication.
+    
+    + Added functionality to incorporate standard errors.
+    
+    + cvSelect() and cvTuning() now allow to specify criterion for selecting 
+      the best model via the argument 'selectBest'.
+    
+    + New xyplot() and dotplot() methods for class "cv".
+
+
+
+Changes in cvTools version 0.1.1
+
+    + Added different types of obtaining CV folds.
+    
