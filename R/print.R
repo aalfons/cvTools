@@ -18,13 +18,13 @@ print.cvFolds <- function(x, ...) {
     # print information on folds (add space between folds and subsets)
     subsets <- x$subsets
     if(x$R == 1) {
-        cn <- "Index"
+        cn <- if(is.null(x$grouping)) "Index" else "Group index"
         nblanks <- 2
     } else {
-        cn <- seq_len(x$R)
+        cn <- as.character(seq_len(x$R))
         nblanks <- 3
     }
-    nblanks <- max(nchar(as.character(subsets[, 1])) - nchar(cn), 0) + nblanks
+    nblanks <- max(nchar(as.character(subsets[, 1]))-nchar(cn[1]), 0) + nblanks
     cn[1] <- paste(c(rep.int(" ", nblanks), cn[1]), collapse="")
     dimnames(subsets) <- list(Fold=x$which, cn)
     print(subsets, ...)

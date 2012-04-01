@@ -13,30 +13,30 @@
 
   \method{repCV}{lm} (object, cost = rmspe, K = 5, R = 1,
     foldType = c("random", "consecutive", "interleaved"),
-    folds = NULL, seed = NULL, ...)
+    grouping = NULL, folds = NULL, seed = NULL, ...)
 
   \method{repCV}{lmrob} (object, cost = rtmspe, K = 5,
     R = 1,
     foldType = c("random", "consecutive", "interleaved"),
-    folds = NULL, seed = NULL, ...)
+    grouping = NULL, folds = NULL, seed = NULL, ...)
 
   \method{repCV}{lts} (object, cost = rtmspe, K = 5, R = 1,
     foldType = c("random", "consecutive", "interleaved"),
-    folds = NULL, fit = c("reweighted", "raw", "both"),
-    seed = NULL, ...)
+    grouping = NULL, folds = NULL,
+    fit = c("reweighted", "raw", "both"), seed = NULL, ...)
 
   cvLm(object, cost = rmspe, K = 5, R = 1,
     foldType = c("random", "consecutive", "interleaved"),
-    folds = NULL, seed = NULL, ...)
+    grouping = NULL, folds = NULL, seed = NULL, ...)
 
   cvLmrob(object, cost = rtmspe, K = 5, R = 1,
     foldType = c("random", "consecutive", "interleaved"),
-    folds = NULL, seed = NULL, ...)
+    grouping = NULL, folds = NULL, seed = NULL, ...)
 
   cvLts(object, cost = rtmspe, K = 5, R = 1,
     foldType = c("random", "consecutive", "interleaved"),
-    folds = NULL, fit = c("reweighted", "raw", "both"),
-    seed = NULL, ...)
+    grouping = NULL, folds = NULL,
+    fit = c("reweighted", "raw", "both"), seed = NULL, ...)
 }
 \arguments{
   \item{object}{an object returned from a model fitting
@@ -59,11 +59,12 @@
   prediction error for the \code{"lmrob"} and \code{"lts"}
   methods (see \code{\link{cost}}).}
 
-  \item{K}{an integer giving the number of groups into
-  which the data should be split (the default is five).
-  Keep in mind that this should be chosen such that all
-  groups are of approximately equal size.  Setting \code{K}
-  equal to \code{n} yields leave-one-out cross-validation.}
+  \item{K}{an integer giving the number of folds into which
+  the data should be split (the default is five).  Keep in
+  mind that this should be chosen such that all folds are
+  of approximately equal size.  Setting \code{K} equal to
+  the number of observations or groups yields leave-one-out
+  cross-validation.}
 
   \item{R}{an integer giving the number of replications for
   repeated \eqn{K}-fold cross-validation.  This is ignored
@@ -75,10 +76,17 @@
   \code{"random"} (the default), \code{"consecutive"} or
   \code{"interleaved"}.}
 
+  \item{grouping}{a factor specifying groups of
+  observations.  If supplied, the data are split according
+  to the groups rather than individual observations such
+  that all observations within a group belong to the same
+  fold.}
+
   \item{folds}{an object of class \code{"cvFolds"} giving
   the folds of the data for cross-validation (as returned
   by \code{\link{cvFolds}}).  If supplied, this is
-  preferred over \code{K} and \code{R}.}
+  preferred over the arguments for generating
+  cross-validation folds.}
 
   \item{fit}{a character string specifying for which fit to
   estimate the prediction error.  Possible values are
@@ -97,7 +105,8 @@
   An object of class \code{"cv"} with the following
   components:
 
-  \item{n}{an integer giving the number of observations.}
+  \item{n}{an integer giving the number of observations or
+  groups.}
 
   \item{K}{an integer giving the number of folds.}
 

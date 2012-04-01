@@ -76,19 +76,25 @@
 #' the prediction error and the second component containing the standard 
 #' error.  The default is to use the root mean squared prediction error 
 #' (see \code{\link{cost}}).
-#' @param K  an integer giving the number of groups into which the data should 
+#' @param K  an integer giving the number of folds into which the data should 
 #' be split (the default is five).  Keep in mind that this should be chosen 
-#' such that all groups are of approximately equal size.  Setting \code{K} 
-#' equal to \code{n} yields leave-one-out cross-validation.
+#' such that all folds are of approximately equal size.  Setting \code{K} 
+#' equal to the number of observations or groups yields leave-one-out 
+#' cross-validation.
 #' @param R  an integer giving the number of replications for repeated 
 #' \eqn{K}-fold cross-validation.  This is ignored for for leave-one-out 
 #' cross-validation and other non-random splits of the data.
 #' @param foldType  a character string specifying the type of folds to be 
 #' generated.  Possible values are \code{"random"} (the default), 
 #' \code{"consecutive"} or \code{"interleaved"}.
+#' @param grouping  a factor specifying groups of observations.  If supplied, 
+#' the data are split according to the groups rather than individual 
+#' observations such that all observations within a group belong to the same 
+#' fold.
 #' @param folds  an object of class \code{"cvFolds"} giving the folds of the 
 #' data for cross-validation (as returned by \code{\link{cvFolds}}).  If 
-#' supplied, this is preferred over \code{K} and \code{R}.
+#' supplied, this is preferred over the arguments for generating 
+#' cross-validation folds.
 #' @param names  an optional character vector giving names for the arguments 
 #' containing the data to be used in the function call (see \dQuote{Details}).
 #' @param predictArgs  a list of additional arguments to be passed to the 
@@ -102,7 +108,7 @@
 #' @param \dots  additional arguments to be passed down.
 #' 
 #' @returnClass cv
-#' @returnItem n  an integer giving the number of observations.
+#' @returnItem n  an integer giving the number of observations or groups.
 #' @returnItem K  an integer giving the number of folds.
 #' @returnItem R  an integer giving the number of replications.
 #' @returnItem cv  a numeric vector containing the respective estimated 
@@ -137,8 +143,8 @@ cvFit <- function(object, ...) UseMethod("cvFit")
 
 cvFit.default <- function(object, data = NULL, x = NULL, y, cost = rmspe, 
         K = 5, R = 1, foldType = c("random", "consecutive", "interleaved"), 
-        folds = NULL, names = NULL, predictArgs = list(), costArgs = list(), 
-        envir = parent.frame(), seed = NULL, ...) {
+        grouping = NULL, folds = NULL, names = NULL, predictArgs = list(), 
+        costArgs = list(), envir = parent.frame(), seed = NULL, ...) {
     ## extract function call for model fit
     matchedCall <- match.call()
     matchedCall[[1]] <- as.name("cvFit")
@@ -146,8 +152,8 @@ cvFit.default <- function(object, data = NULL, x = NULL, y, cost = rmspe,
     if(is.null(call)) stop("function call for model fitting not available")
     ## call method for unevaluated function calls
     out <- cvFit(call, data=data, x=x, y=y, cost=cost, K=K, R=R, 
-        foldType=foldType, folds=folds, names=names, predictArgs=predictArgs, 
-        costArgs=costArgs, envir=envir, seed=seed)
+        foldType=foldType, grouping=grouping, folds=folds, names=names, 
+        predictArgs=predictArgs, costArgs=costArgs, envir=envir, seed=seed)
     out$call <- matchedCall
     out
 }
@@ -159,8 +165,8 @@ cvFit.default <- function(object, data = NULL, x = NULL, y, cost = rmspe,
 
 cvFit.function <- function(object, formula, data = NULL, x = NULL, y, 
         args = list(), cost = rmspe, K = 5, R = 1, 
-        foldType = c("random", "consecutive", "interleaved"), folds = NULL, 
-        names = NULL, predictArgs = list(), costArgs = list(), 
+        foldType = c("random", "consecutive", "interleaved"), grouping = NULL, 
+        folds = NULL, names = NULL, predictArgs = list(), costArgs = list(), 
         envir = parent.frame(), seed = NULL, ...) {
     ## initializations
     matchedCall <- match.call()
@@ -182,8 +188,8 @@ cvFit.function <- function(object, formula, data = NULL, x = NULL, y,
     }
     ## call method for unevaluated function calls
     out <- cvFit(call, data=data, x=x, y=y, cost=cost, K=K, R=R, 
-        foldType=foldType, folds=folds, names=names, predictArgs=predictArgs, 
-        costArgs=costArgs, envir=envir, seed=seed)
+        foldType=foldType, grouping=grouping, folds=folds, names=names, 
+        predictArgs=predictArgs, costArgs=costArgs, envir=envir, seed=seed)
     out$call <- matchedCall
     out
 }
@@ -195,8 +201,8 @@ cvFit.function <- function(object, formula, data = NULL, x = NULL, y,
 
 cvFit.call <- function(object, data = NULL, x = NULL, y, cost = rmspe, 
         K = 5, R = 1, foldType = c("random", "consecutive", "interleaved"), 
-        folds = NULL, names = NULL, predictArgs = list(), costArgs = list(), 
-        envir = parent.frame(), seed = NULL, ...) {
+        grouping = NULL, folds = NULL, names = NULL, predictArgs = list(), 
+        costArgs = list(), envir = parent.frame(), seed = NULL, ...) {
     ## initializations
     matchedCall <- match.call()
     matchedCall[[1]] <- as.name("cvFit")
@@ -215,7 +221,9 @@ cvFit.call <- function(object, data = NULL, x = NULL, y, cost = rmspe,
         seed <- get(".Random.seed", envir=.GlobalEnv, inherits = FALSE)
     } else set.seed(seed)
     ## compute data blocks as in 'cv.lars'
-    if(is.null(folds)) folds <- cvFolds(n, K, R, type=foldType)
+    if(is.null(folds)) {
+        folds <- cvFolds(n, K, R, type=foldType, grouping=grouping)
+    }
     R <- folds$R
     ## call workhorse function to perform cross-validation
     cv <- cvTool(object, data, x, y, cost=cost, folds=folds, names=names, 
