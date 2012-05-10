@@ -1,7 +1,9 @@
-Changes in cvTools version 0.4.0
+Changes in cvTools version 0.3.1
 
+    + Bugfix in cvTool(): matrix of estimated prediction errors is now returned 
+      correctly for one replication.
+    
     + Bugfix in cvTuning(): "function" method now correctly stores matched call.
-
 
 
 Changes in cvTools version 0.3.0

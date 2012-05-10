@@ -1,21 +1,41 @@
 Package: cvTools
 Type: Package
 Title: Cross-validation tools for regression models
-Version: 0.3.0
-Date: 2012-03-05
+Version: 0.3.1
+Date: 2012-05-10
 Author: Andreas Alfons
 Maintainer: Andreas Alfons <andreas.alfons@econ.kuleuven.be>
-Depends: R (>= 2.11.0), lattice, robustbase
-Imports: lattice, robustbase, stats
+Depends:
+    R (>= 2.11.0),
+    lattice,
+    robustbase
+Imports:
+    lattice,
+    robustbase,
+    stats
 Description: Tools that allow developers to write functions for
-        cross-validation with minimal programming effort and assist
-        users with model selection.
+    cross-validation with minimal programming effort and assist
+    users with model selection.
 License: GPL (>= 2)
 LazyLoad: yes
-Collate: 'accessors.R' 'aggregate.R' 'bwplot.R' 'cost.R' 'cvFit.R'
-        'cvFolds.R' 'cvReshape.R' 'cvSelect.R' 'cvTool.R' 'cvTuning.R'
-        'densityplot.R' 'dotplot.R' 'plot.R' 'print.R' 'repCV.R'
-        'selectBest.R' 'subset.R' 'summary.R' 'utils.R' 'xyplot.R'
-Packaged: 2012-03-05 12:30:08 UTC; andi
-Repository: CRAN
-Date/Publication: 2012-03-05 14:24:16
+Collate:
+    'accessors.R'
+    'aggregate.R'
+    'bwplot.R'
+    'cost.R'
+    'cvFit.R'
+    'cvFolds.R'
+    'cvReshape.R'
+    'cvSelect.R'
+    'cvTool.R'
+    'cvTuning.R'
+    'densityplot.R'
+    'dotplot.R'
+    'plot.R'
+    'print.R'
+    'repCV.R'
+    'selectBest.R'
+    'subset.R'
+    'summary.R'
+    'utils.R'
+    'xyplot.R'

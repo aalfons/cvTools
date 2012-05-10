@@ -107,21 +107,7 @@ cvTool <- function(call, data = NULL, x = NULL, y, cost = rmspe, folds,
         )
     }
     R <- folds$R
-    # perform repeated cross-validation
-#    cv <- lapply(seq_len(R), 
-#        function(r) {
-#            subsetList <- getSubsetList(folds, r)
-#            yHat <- eval(cvExpr)  # perform cross-validation
-#            # instead of collecting the results from the folds in the original 
-#            # order of the observations, the response is re-ordered accordingly
-#            yHat <- combineData(yHat)  # combine predictions from the folds
-#            y <- dataSubset(y, unlist(subsetList))  # re-order response
-#            # compute cost function for predicted values
-#            if(is.null(dim(y)) && !is.null(dim(yHat))) {
-#                apply(yHat, 2, 
-#                    function(yHat) doCall(cost, y, yHat, args=costArgs))
-#            } else doCall(cost, y, yHat, args=costArgs)
-#        })
+    # perform (repeated) cross-validation
     if(R == 1) {
         subsetList <- getSubsetList(folds)
         yHat <- eval(cvExpr)  # perform cross-validation
@@ -159,8 +145,6 @@ cvTool <- function(call, data = NULL, x = NULL, y, cost = rmspe, folds,
                 tmp
             })
     }
-#    cv <- if(is.null(dim(cv))) as.matrix(cv) else t(cv)
-#    if(is.null(colnames(cv))) colnames(cv) <- defaultCvNames(ncol(cv))
     if(is.list(cv)) {
         cv <- lapply(cv, 
             function(x) {
@@ -168,7 +152,7 @@ cvTool <- function(call, data = NULL, x = NULL, y, cost = rmspe, folds,
                 x
             })
     } else {
-        cv <- if(is.null(dim(cv))) as.matrix(cv) else t(cv)
+        cv <- t(cv)
         if(is.null(colnames(cv))) colnames(cv) <- defaultCvNames(ncol(cv))
     }
     cv
