@@ -179,7 +179,7 @@ cvTuning.function <- function(object, formula, data = NULL, x = NULL, y,
         envir = parent.frame(), seed = NULL, ...) {
     ## initializations
     matchedCall <- match.call()
-    matchedCall[[1]] <- as.name("cvFit")
+    matchedCall[[1]] <- as.name("cvTuning")
     call <- as.call(c(object, args))  # set up unevaluated function call
     haveFormula <- !missing(formula)
     if(haveFormula || !missing(data)) {

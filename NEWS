@@ -1,3 +1,9 @@
+Changes in cvTools version 0.4.0
+
+    + Bugfix in cvTuning(): "function" method now correctly stores matched call.
+
+
+
 Changes in cvTools version 0.3.0
 
     + Changed some argument and component names regarding standard errors.
