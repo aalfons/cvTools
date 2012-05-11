@@ -1,3 +1,12 @@
+Changes in cvTools version 0.3.2
+
+    + Bugfix in cvTool(): matrix of estimated prediction errors is now returned 
+      correctly for more than one replication (this bug was introduced in the 
+      bugfix for one replication from version 0.3.1).
+    
+    + Added tests for cvTool(), cvFit() and cvTuning() using package 'testthat'.
+
+
 Changes in cvTools version 0.3.1
 
     + Bugfix in cvTool(): matrix of estimated prediction errors is now returned 

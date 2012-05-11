@@ -152,7 +152,7 @@ cvTool <- function(call, data = NULL, x = NULL, y, cost = rmspe, folds,
                 x
             })
     } else {
-        cv <- t(cv)
+        cv <- if(is.null(dim(cv)) && R > 1) as.matrix(cv) else t(cv)
         if(is.null(colnames(cv))) colnames(cv) <- defaultCvNames(ncol(cv))
     }
     cv

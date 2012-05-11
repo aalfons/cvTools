@@ -53,7 +53,6 @@
 #' 
 #' @aliases print.cvTuning
 #' 
-#' 
 #' @param object  a function or an unevaluated function call for fitting 
 #' a model (see \code{\link{call}} for the latter).
 #' @param formula  a \code{\link[stats]{formula}} describing the model.
