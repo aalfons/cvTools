@@ -24,6 +24,22 @@ cvFitsLts <- cvSelect("0.5" = cvFitLts50, "0.75" = cvFitLts75)
 cvFitsLts
 
 # summary of the results with the 50% subsets
-aggregate(cvFitLts50, summary)
+summary(cvFitLts50)
 # summary of the combined results
-aggregate(cvFitsLts, summary)
+summary(cvFitsLts)
+
+
+## evaluate MM regression models tuned for 
+## 80%, 85%, 90% and 95% efficiency
+tuning <- list(tuning.psi=c(3.14, 3.44, 3.88, 4.68))
+
+# set up function call
+call <- call("lmrob", formula = Y ~ .)
+# perform cross-validation
+cvFitsLmrob <- cvTuning(call, data = coleman, 
+    y = coleman$Y, tuning = tuning, cost = rtmspe, 
+    folds = folds, costArgs = list(trim = 0.1))
+cvFitsLmrob
+
+# summary of results
+summary(cvFitsLmrob)

@@ -102,39 +102,6 @@ cvFitLts <- cvLts(fitLts, cost = rtmspe,
 cvFits <- cvSelect(LS = cvFitLm, MM = cvFitLmrob, LTS = cvFitLts)
 cvFits
 xyplot(cvFits)
-
-
-## compare raw and reweighted LTS estimators for 
-## 50\% and 75\% subsets
-
-# 50\% subsets
-fitLts50 <- ltsReg(Y ~ ., data = coleman, alpha = 0.5)
-cvFitLts50 <- cvLts(fitLts50, cost = rtmspe, folds = folds, 
-    fit = "both", trim = 0.1)
-
-# 75\% subsets
-fitLts75 <- ltsReg(Y ~ ., data = coleman, alpha = 0.75)
-cvFitLts75 <- cvLts(fitLts75, cost = rtmspe, folds = folds, 
-    fit = "both", trim = 0.1)
-
-# combine and plot results
-cvFitsLts <- cvSelect("0.5" = cvFitLts50, "0.75" = cvFitLts75)
-cvFitsLts
-xyplot(cvFitsLts)
-
-
-## evaluate MM regression models tuned for 
-## 80\%, 85\%, 90\% and 95\% efficiency
-tuning <- list(tuning.psi=c(3.14, 3.44, 3.88, 4.68))
-
-# perform cross-validation
-cvFitsLmrob <- cvTuning(fitLmrob$call, data = coleman, 
-    y = coleman$Y, tuning = tuning, cost = rtmspe, 
-    folds = folds, costArgs = list(trim = 0.1))
-cvFitsLmrob
-
-# plot results
-xyplot(cvFitsLmrob)
 }
 \author{
   Andreas Alfons

@@ -3,6 +3,10 @@ Changes in cvTools version 0.3.3
     + Added functionality for cross-validation with grouped observations.
     
     + Bugfix in print() method for class "cvFolds": no longer produces warning.
+    
+    + Removed some examples to cut down example check times.  The respective 
+      full examples from the previous versions are available in folder 
+      /inst/doc/examples-full as R scripts.
 
 
 Changes in cvTools version 0.3.2

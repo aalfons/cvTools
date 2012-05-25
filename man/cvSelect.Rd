@@ -144,23 +144,6 @@ cvFitLts <- cvLts(fitLts, cost = rtmspe,
 
 # compare cross-validation results
 cvSelect(LS = cvFitLm, MM = cvFitLmrob, LTS = cvFitLts)
-
-
-## compare raw and reweighted LTS estimators for 
-## 50\% and 75\% subsets
-
-# 50\% subsets
-fitLts50 <- ltsReg(Y ~ ., data = coleman, alpha = 0.5)
-cvFitLts50 <- cvLts(fitLts50, cost = rtmspe, folds = folds, 
-    fit = "both", trim = 0.1)
-
-# 75\% subsets
-fitLts75 <- ltsReg(Y ~ ., data = coleman, alpha = 0.75)
-cvFitLts75 <- cvLts(fitLts75, cost = rtmspe, folds = folds, 
-    fit = "both", trim = 0.1)
-
-# combine and plot results
-cvSelect("0.5" = cvFitLts50, "0.75" = cvFitLts75)
 }
 \author{
   Andreas Alfons
