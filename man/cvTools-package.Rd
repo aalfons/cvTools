@@ -12,8 +12,8 @@ and assist users with model selection.
 \tabular{ll}{
 Package: \tab cvTools\cr
 Type: \tab Package\cr
-Version: \tab 0.3.2\cr
-Date: \tab 2012-05-11\cr
+Version: \tab 0.3.3\cr
+Date: \tab 2012-05-25\cr
 Depends: \tab 
 R (>= 2.11.0),
 lattice,

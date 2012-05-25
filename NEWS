@@ -1,3 +1,10 @@
+Changes in cvTools version 0.3.3
+
+    + Added functionality for cross-validation with grouped observations.
+    
+    + Bugfix in print() method for class "cvFolds": no longer produces warning.
+
+
 Changes in cvTools version 0.3.2
 
     + Bugfix in cvTool(): matrix of estimated prediction errors is now returned 

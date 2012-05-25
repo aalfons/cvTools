@@ -41,19 +41,25 @@
 #' for the \code{"lm"} method and the root trimmed mean squared prediction 
 #' error for the \code{"lmrob"} and \code{"lts"} methods (see 
 #' \code{\link{cost}}).
-#' @param K  an integer giving the number of groups into which the data should 
+#' @param K  an integer giving the number of folds into which the data should 
 #' be split (the default is five).  Keep in mind that this should be chosen 
-#' such that all groups are of approximately equal size.  Setting \code{K} 
-#' equal to \code{n} yields leave-one-out cross-validation.
+#' such that all folds are of approximately equal size.  Setting \code{K} 
+#' equal to the number of observations or groups yields leave-one-out 
+#' cross-validation.
 #' @param R  an integer giving the number of replications for repeated 
 #' \eqn{K}-fold cross-validation.  This is ignored for for leave-one-out 
 #' cross-validation and other non-random splits of the data.
 #' @param foldType  a character string specifying the type of folds to be 
 #' generated.  Possible values are \code{"random"} (the default), 
 #' \code{"consecutive"} or \code{"interleaved"}.
+#' @param grouping  a factor specifying groups of observations.  If supplied, 
+#' the data are split according to the groups rather than individual 
+#' observations such that all observations within a group belong to the same 
+#' fold.
 #' @param folds  an object of class \code{"cvFolds"} giving the folds of the 
 #' data for cross-validation (as returned by \code{\link{cvFolds}}).  If 
-#' supplied, this is preferred over \code{K} and \code{R}.
+#' supplied, this is preferred over the arguments for generating 
+#' cross-validation folds.
 #' @param fit  a character string specifying for which fit to estimate the 
 #' prediction error.  Possible values are \code{"reweighted"} (the default) for 
 #' the prediction error of the reweighted fit, \code{"raw"} for the prediction 
@@ -65,7 +71,7 @@
 #' function \code{cost}.
 #' 
 #' @returnClass cv
-#' @returnItem n  an integer giving the number of observations.
+#' @returnItem n  an integer giving the number of observations or groups.
 #' @returnItem K  an integer giving the number of folds.
 #' @returnItem R  an integer giving the number of replications.
 #' @returnItem cv  a numeric vector containing the estimated prediction 
@@ -113,7 +119,7 @@ repCV <- function(object, ...) UseMethod("repCV")
 
 repCV.lm <- function(object, cost=rmspe, K = 5, R = 1, 
         foldType = c("random", "consecutive", "interleaved"), 
-        folds = NULL, seed = NULL, ...) {
+        grouping = NULL, folds = NULL, seed = NULL, ...) {
     ## initializations
     matchedCall <- match.call()
     # retrieve data from model fit
@@ -136,8 +142,8 @@ repCV.lm <- function(object, cost=rmspe, K = 5, R = 1,
     if(is.null(y <- object$y)) y <- model.response(data)
     ## call function cvFit() to perform cross-validation
     out <- cvFit(object, data=data, y=y, cost=cost, K=K, R=R, 
-        foldType=foldType, folds=folds, costArgs=list(...), 
-        envir=parent.frame(), seed=seed)
+        foldType=foldType, grouping=grouping, folds=folds, 
+        costArgs=list(...), envir=parent.frame(), seed=seed)
     out$call <- matchedCall
     out
 }
@@ -151,7 +157,7 @@ repCV.lm <- function(object, cost=rmspe, K = 5, R = 1,
 
 repCV.lmrob <- function(object, cost=rtmspe, K = 5, R = 1, 
         foldType = c("random", "consecutive", "interleaved"), 
-        folds = NULL, seed = NULL, ...) {
+        grouping = NULL, folds = NULL, seed = NULL, ...) {
     ## initializations
     matchedCall <- match.call()
     # retrieve data from model fit
@@ -174,8 +180,8 @@ repCV.lmrob <- function(object, cost=rtmspe, K = 5, R = 1,
     if(is.null(y <- object$y)) y <- model.response(data)
     ## call function cvFit() to perform cross-validation
     out <- cvFit(object, data=data, y=y, cost=cost, K=K, R=R, 
-        foldType=foldType, folds=folds, costArgs=list(...), 
-        envir=parent.frame(), seed=seed)
+        foldType=foldType, grouping=grouping, folds=folds, 
+        costArgs=list(...), envir=parent.frame(), seed=seed)
     out$call <- matchedCall
     out
 }
@@ -188,9 +194,8 @@ repCV.lmrob <- function(object, cost=rtmspe, K = 5, R = 1,
 #' @import robustbase
 
 repCV.lts <- function(object, cost = rtmspe, K = 5, R = 1, 
-        foldType = c("random", "consecutive", "interleaved"), 
-        folds = NULL, fit = c("reweighted", "raw", "both"), 
-        seed = NULL, ...) {
+        foldType = c("random", "consecutive", "interleaved"), grouping = NULL, 
+        folds = NULL, fit = c("reweighted", "raw", "both"), seed = NULL, ...) {
     ## initializations
     matchedCall <- match.call()
     object <- object
@@ -219,8 +224,8 @@ repCV.lts <- function(object, cost = rtmspe, K = 5, R = 1,
     call$intercept <- object$intercept
     ## call function cvFit() to perform cross-validation
     out <- cvFit(call, x=x, y=y, cost=cost, K=K, R=R, foldType=foldType, 
-        folds=folds, predictArgs=list(fit=fit), costArgs=list(...), 
-        envir=parent.frame(), seed=seed)
+        grouping=grouping, folds=folds, predictArgs=list(fit=fit), 
+        costArgs=list(...), envir=parent.frame(), seed=seed)
     out$call <- matchedCall
     out
 }
