@@ -107,7 +107,7 @@
 #' 
 #' @keywords utilities
 #' 
-#' @export repCV
+#' @export
 
 repCV <- function(object, ...) UseMethod("repCV")
 
@@ -117,7 +117,7 @@ repCV <- function(object, ...) UseMethod("repCV")
 #' @method repCV lm
 #' @export
 
-repCV.lm <- function(object, cost=rmspe, K = 5, R = 1, 
+repCV.lm <- function(object, cost = rmspe, K = 5, R = 1, 
         foldType = c("random", "consecutive", "interleaved"), 
         grouping = NULL, folds = NULL, seed = NULL, ...) {
     ## initializations
@@ -155,7 +155,7 @@ repCV.lm <- function(object, cost=rmspe, K = 5, R = 1,
 #' @export
 #' @import robustbase
 
-repCV.lmrob <- function(object, cost=rtmspe, K = 5, R = 1, 
+repCV.lmrob <- function(object, cost = rtmspe, K = 5, R = 1, 
         foldType = c("random", "consecutive", "interleaved"), 
         grouping = NULL, folds = NULL, seed = NULL, ...) {
     ## initializations
